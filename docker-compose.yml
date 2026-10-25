@@ -1,0 +1,8 @@
+services:
+  web:
+    build: .
+    image: sqa-exp1-s1:latest
+    container_name: sqa-exp1-s1
+    ports:
+      - "80:8081"
+    restart: unless-stopped

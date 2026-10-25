@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head(${evento.nombre})}"></head>
+<body>
+<nav th:replace="~{fragments :: navbar}"></nav>
+
+<main class="container">
+    <a th:href="@{/eventos}">&larr; Volver a eventos</a>
+
+    <h1 class="mt-2" th:text="${evento.nombre}">Nombre del evento</h1>
+    <p class="text-body-secondary">
+        <span th:text="${evento.categoria}">Categoría</span>
+        <span th:if="${evento.destacado}"> · Destacado</span>
+    </p>
+
+    <div class="row">
+        <div class="col-md-7">
+            <h2 class="h4">Descripción</h2>
+            <p th:text="${evento.descripcion}">Descripción</p>
+
+            <h2 class="h4">Principales expositores</h2>
+            <ul>
+                <li th:each="x : ${evento.expositores}" th:text="${x}">Expositor</li>
+            </ul>
+
+            <h2 class="h4">Organizadores</h2>
+            <ul>
+                <li th:each="o : ${evento.organizadores}" th:text="${o}">Organizador</li>
+            </ul>
+        </div>
+
+        <div class="col-md-5">
+            <h2 class="h4">Información</h2>
+            <table class="table">
+                <tbody>
+                <tr><th scope="row">Fecha</th><td th:text="${evento.fechaLarga}">Fecha</td></tr>
+                <tr><th scope="row">Hora</th>
+                    <td th:text="${#temporals.format(evento.fechaHora, 'HH:mm')} + ' hrs'">10:00 hrs</td></tr>
+                <tr><th scope="row">Dirección</th><td th:text="${evento.direccion}">Dirección</td></tr>
+                <tr><th scope="row">Ciudad</th><td th:text="${evento.ciudad}">Ciudad</td></tr>
+                <tr><th scope="row">Entrada</th><td th:text="${evento.precio}">$0</td></tr>
+                </tbody>
+            </table>
+
+            <h2 class="h4">Servicios disponibles</h2>
+            <table class="table">
+                <tbody>
+                <tr><td>Estacionamiento</td><td th:text="${evento.estacionamiento} ? 'Sí' : 'No'">Sí</td></tr>
+                <tr><td>Locomoción colectiva</td><td th:text="${evento.locomocionColectiva} ? 'Sí' : 'No'">Sí</td></tr>
+                <tr><td>Servicio de comidas</td><td th:text="${evento.servicioComidas} ? 'Sí' : 'No'">Sí</td></tr>
+                <tr><td>Alojamiento</td><td th:text="${evento.alojamiento} ? 'Sí' : 'No'">Sí</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<th:block th:replace="~{fragments :: footer}"></th:block>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments :: head('Inicio')}"></head>
+<body>
+<nav th:replace="~{fragments :: navbar}"></nav>
+
+<main class="container">
+    <div class="p-4 mb-4 bg-body-tertiary rounded">
+        <h1>Eventos gamer en Chile</h1>
+        <p class="lead">Revisa los próximos torneos, LAN parties y convenciones de la comunidad.</p>
+        <div sec:authorize="!isAuthenticated()">
+            <a class="btn btn-primary" th:href="@{/registro}">Crear cuenta</a>
+            <a class="btn btn-outline-secondary" th:href="@{/login}">Iniciar sesión</a>
+        </div>
+        <div sec:authorize="isAuthenticated()">
+            <a class="btn btn-primary" th:href="@{/eventos}">Buscar eventos</a>
+        </div>
+    </div>
+
+    <h2>Eventos destacados</h2>
+    <div class="row row-cols-1 row-cols-md-3 g-3 mb-4">
+        <th:block th:each="evento : ${destacados}">
+            <div th:replace="~{fragments :: tarjetaEvento(${evento})}"></div>
+        </th:block>
+    </div>
+
+    <h2>Próximos eventos</h2>
+    <p th:if="${#lists.isEmpty(proximos)}">No hay eventos próximos por ahora.</p>
+    <div class="row row-cols-1 row-cols-md-3 g-3 mb-3">
+        <th:block th:each="evento : ${proximos}">
+            <div th:replace="~{fragments :: tarjetaEvento(${evento})}"></div>
+        </th:block>
+    </div>
+    <p class="text-body-secondary" sec:authorize="!isAuthenticated()">
+        Inicia sesión para buscar eventos y ver todos sus detalles.
+    </p>
+
+    <h2>Publicidad</h2>
+    <div class="row row-cols-1 row-cols-md-3 g-3">
+        <div class="col">
+            <div class="card h-100 card-body">
+                <h5 class="card-title">NeoKeys</h5>
+                <p class="card-text">Teclados mecánicos con 15% de descuento para la comunidad.</p>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card h-100 card-body">
+                <h5 class="card-title">ByteNet Fibra</h5>
+                <p class="card-text">Plan de internet gamer con ping bajo.</p>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card h-100 card-body">
+                <h5 class="card-title">Respawn Café</h5>
+                <p class="card-text">Café, snacks y consolas libres.</p>
+            </div>
+        </div>
+    </div>
+    <p class="text-body-secondary mt-2"><small>Marcas ficticias con fines académicos.</small></p>
+</main>
+
+<th:block th:replace="~{fragments :: footer}"></th:block>
+</body>
+</html>

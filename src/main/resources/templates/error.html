@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Error')}"></head>
+<body>
+<nav th:replace="~{fragments :: navbar}"></nav>
+
+<main class="container">
+    <h1 th:text="${status} ?: 'Error'">404</h1>
+    <p th:if="${status == 404}">La página que buscas no existe.</p>
+    <p th:if="${status == 403}">No tienes permiso para ver esta página.</p>
+    <p th:unless="${status == 404 or status == 403}">Ocurrió un problema. Intenta nuevamente.</p>
+    <a class="btn btn-primary" th:href="@{/home}">Volver al inicio</a>
+</main>
+
+<th:block th:replace="~{fragments :: footer}"></th:block>
+</body>
+</html>

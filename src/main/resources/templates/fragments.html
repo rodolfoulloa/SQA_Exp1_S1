@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:fragment="head(titulo)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${titulo} + ' | PixelMeet'">PixelMeet</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+</head>
+
+<body>
+
+<nav th:fragment="navbar" class="navbar navbar-expand-lg bg-body-tertiary mb-4">
+    <div class="container">
+        <a class="navbar-brand" th:href="@{/home}">PixelMeet</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu"
+                aria-controls="menu" aria-expanded="false" aria-label="Mostrar menú">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="menu">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item"><a class="nav-link" th:href="@{/home}">Inicio</a></li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <a class="nav-link" th:href="@{/eventos}">Eventos</a>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <a class="nav-link" th:href="@{/perfil}">Mi perfil</a>
+                </li>
+            </ul>
+            <div class="d-flex align-items-center gap-2" sec:authorize="isAuthenticated()">
+                <span class="navbar-text">Hola, <span sec:authentication="name">usuario</span></span>
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit" class="btn btn-outline-secondary btn-sm">Cerrar sesión</button>
+                </form>
+            </div>
+            <div class="d-flex gap-2" sec:authorize="!isAuthenticated()">
+                <a class="btn btn-outline-primary btn-sm" th:href="@{/registro}">Registrarse</a>
+                <a class="btn btn-primary btn-sm" th:href="@{/login}">Iniciar sesión</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<th:block th:fragment="footer">
+    <footer class="container border-top py-3 mt-5 text-body-secondary">
+        <small>PixelMeet · Proyecto académico ISY2202 · Duoc UC</small>
+    </footer>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+</th:block>
+
+<div th:fragment="tarjetaEvento(evento)" class="col">
+    <div class="card h-100">
+        <div class="card-body">
+            <h5 class="card-title" th:text="${evento.nombre}">Nombre del evento</h5>
+            <h6 class="card-subtitle mb-2 text-body-secondary">
+                <span th:text="${evento.categoria}">Categoría</span>
+                <span th:if="${evento.destacado}"> · Destacado</span>
+            </h6>
+            <p class="card-text">
+                <span th:text="${#temporals.format(evento.fechaHora, 'dd/MM/yyyy HH:mm')}">01/01/2027 10:00</span><br>
+                <span th:text="${evento.ciudad}">Ciudad</span><br>
+                <span th:text="${evento.precio}">$0</span>
+            </p>
+            <a class="btn btn-primary btn-sm" th:href="@{/eventos/{id}(id=${evento.id})}">Ver detalle</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

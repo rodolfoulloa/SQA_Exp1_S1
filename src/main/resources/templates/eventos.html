@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Eventos')}"></head>
+<body>
+<nav th:replace="~{fragments :: navbar}"></nav>
+
+<main class="container">
+    <h1 class="mb-3">Eventos</h1>
+
+    <form th:action="@{/eventos}" method="get" class="row g-3 align-items-end mb-4" role="search">
+        <div class="col-md-3">
+            <label for="categoria" class="form-label">Categoría</label>
+            <select id="categoria" name="categoria" class="form-select">
+                <option value="">Todas</option>
+                <option th:each="c : ${categorias}" th:value="${c}" th:text="${c}"
+                        th:selected="${c == categoria}">Categoría</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label for="desde" class="form-label">Desde</label>
+            <input type="date" id="desde" name="desde" class="form-control" th:value="${desde}">
+        </div>
+        <div class="col-md-2">
+            <label for="hasta" class="form-label">Hasta</label>
+            <input type="date" id="hasta" name="hasta" class="form-control" th:value="${hasta}">
+        </div>
+        <div class="col-md-3">
+            <label for="ubicacion" class="form-label">Ubicación</label>
+            <input type="text" id="ubicacion" name="ubicacion" class="form-control" list="lista-ciudades"
+                   maxlength="60" placeholder="Ciudad o comuna" th:value="${ubicacion}">
+            <datalist id="lista-ciudades">
+                <option th:each="ciudad : ${ciudades}" th:value="${ciudad}"></option>
+            </datalist>
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary">Buscar</button>
+            <a th:href="@{/eventos}" class="btn btn-outline-secondary">Limpiar</a>
+        </div>
+    </form>
+
+    <p th:text="${#lists.size(eventos)} + ' evento(s) encontrado(s)'">0 evento(s) encontrado(s)</p>
+    <p th:if="${#lists.isEmpty(eventos)}">No hay eventos con esos filtros.</p>
+
+    <div class="row row-cols-1 row-cols-md-3 g-3">
+        <th:block th:each="evento : ${eventos}">
+            <div th:replace="~{fragments :: tarjetaEvento(${evento})}"></div>
+        </th:block>
+    </div>
+</main>
+
+<th:block th:replace="~{fragments :: footer}"></th:block>
+</body>
+</html>
